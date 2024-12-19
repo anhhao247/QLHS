@@ -154,6 +154,7 @@ class Lop(db.Model):
     __tablename__ = 'lop'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50), nullable=False)
+    siso = Column(Integer, nullable=True)
     grade_id = Column(Integer, ForeignKey('grade.id'), nullable=False)
     students = relationship('Student', secondary='lop_student', lazy='subquery',
                                backref=backref('lops', lazy=True))
