@@ -151,6 +151,8 @@ class Student(db.Model):
     sdt = Column(String(20), nullable=False)
     email = Column(String(50), nullable=False)
     diems = relationship('Diem', backref='student', lazy=True)
+    students = relationship('Lop', secondary='lop_student', lazy='subquery',
+                            backref=backref('students', lazy=True))
 
 class Grade(db.Model):
     __tablename__ = 'grade'
@@ -167,8 +169,6 @@ class Lop(db.Model):
     name = Column(String(50), nullable=False)
     siso = Column(Integer, nullable=True)
     grade_id = Column(Integer, ForeignKey('grade.id'), nullable=False)
-    students = relationship('Student', secondary='lop_student', lazy='subquery',
-                               backref=backref('lops', lazy=True))
 
     def __str__(self):
         return self.name

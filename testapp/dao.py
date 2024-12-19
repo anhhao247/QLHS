@@ -18,5 +18,8 @@ def load_student():
 def load_diem():
     return Diem.query.all()
 
+def load_user():
+    return User.query.all()
+
 def get_student_by_id(student_id):
     return Student.query.get(student_id)
