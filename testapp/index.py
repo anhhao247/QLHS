@@ -1,5 +1,6 @@
 from testapp import app, dao
 from flask import request, render_template
+from testapp.admin import *
 
 @app.route("/")
 def index():
