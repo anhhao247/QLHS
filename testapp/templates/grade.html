@@ -1,0 +1,12 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Grade{% endblock %}
+
+{% block content %}
+    {% for g in grades %}
+    <div class="card">
+      <div class="card-body">{{ g.name }}</div>
+    </div>
+    {% endfor %}
+{% endblock %}
+

@@ -1,0 +1,33 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Student{% endblock %}
+
+{% block content %}
+    <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Họ</th>
+        <th>Tên</th>
+        <th>Giới tính</th>
+        <th>Ngày sinh</th>
+        <th>Địa chỉ</th>
+        <th>Số điện thoại</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for s in students %}
+      <tr>
+        <td>{{ s.ho }}</td>
+        <td>{{ s.ten }}</td>
+        <td>{{ s.sex }}</td>
+        <td>{{ s.DoB }}</td>
+        <td>{{ s.address }}</td>
+        <td>{{ s.sdt }}</td>
+        <td>{{ s.email }}@example.com</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}
