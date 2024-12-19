@@ -1,0 +1,32 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Diem{% endblock %}
+
+{% block content %}
+<h1>ĐIỂM TOÁN</h1>
+    <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Họ tên</th>
+
+      </tr>
+    </thead>
+    <tbody>
+    {% for s in students %}
+      <tr>
+        <td>{{ s.ho }} {{ s.ten }}</td>
+        {% for d in diems %}
+          {% if s.id == d.student_id and d.type  == '15p'%}
+          <td>{{ d.value }}</td>
+          {% else %}
+          <td></td>
+          {% endif %}
+
+        {% endfor %}
+      </tr>
+    {% endfor %}
+
+    </tbody>
+  </table>
+
+{% endblock %}

@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
   <!-- Brand -->
-  <a class="navbar-brand" href="#">
+  <a class="navbar-brand" href="{{ url_for('index') }}">
       <img src="{{ url_for('static', filename='images/paypal.png') }}" alt="Logo" style="width:40px;">
   </a>
 
@@ -20,6 +20,9 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('view_student') }}">Student</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('view_diem') }}">Diem</a>
       </li>
     </ul>
   </div>

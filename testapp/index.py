@@ -12,13 +12,23 @@ def view_grade():
 
 @app.route("/class")
 def view_class():
-    classes = dao.load_class()
+    grade_id = request.args.get('grade_id')
+    classes = dao.load_class(grade_id)
+
     return render_template('class.html', classes=classes)
 
 @app.route("/student")
 def view_student():
     students = dao.load_student()
     return render_template('student.html', students=students)
+
+@app.route("/diem")
+def view_diem():
+    diems = dao.load_diem()
+    students = dao.load_student()
+
+    return render_template('diem.html', diems=diems, students=students)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

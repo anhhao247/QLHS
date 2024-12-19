@@ -173,3 +173,68 @@ lop_student = db.Table('lop_student',
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
+
+
+        #
+        # # Add User Roles and Users
+        # admin_user = Admin(name="Admin User", username="admin", password="admin123", user_role=UserRole.ADMIN,
+        #                    ho="Nguyen Van", ten="A", permissions="Full Access")
+        # staff_user = Staff(name="Staff User", username="staff", password="staff123", user_role=UserRole.STAFF,
+        #                    ho="Tran Van", ten="B")
+        # teacher_user = Teacher(name="Ngo Bao Chau", username="ngobaochau", password="teacher123",
+        #                        user_role=UserRole.TEACHER, ho="Ngo Bao", ten="Chau", monhoc_id=1)
+        # teacher_user_2 = Teacher(name="Nguyen Nhat Anh", username="nguyennhatanh", password="teacher123",
+        #                        user_role=UserRole.TEACHER, ho="Nguyen Nhat", ten="Anh", monhoc_id=2)
+        #
+        # # Add MonHoc (Subjects)
+        # math_subject = MonHoc(name="Toán")
+        # literature_subject = MonHoc(name="Ngữ Văn")
+        #
+        # # Add HocKy (Semesters)
+        # semester_1 = HocKy(name="HK1 2024-2025")
+        # semester_2 = HocKy(name="HK2 2024-2025")
+        #
+        # # Add Students
+        # student_1 = Student(ho="Pham", ten="Minh", sex="Nam", DoB=datetime(2010, 5, 15), address="123 Street A",
+        #                     sdt="0123456789", email="minh.pham@example.com")
+        # student_2 = Student(ho="Nguyen", ten="An", sex="Nữ", DoB=datetime(2011, 3, 22), address="456 Street B",
+        #                     sdt="0987654321", email="an.nguyen@example.com")
+        #
+        # # Add Grades and Classes
+        # grade_10 = Grade(name="Khối 10")
+        # grade_11 = Grade(name="Khối 11")
+        # grade_12 = Grade(name="Khối 12")
+        #
+        # class_10A = Lop(name="10A", siso=40, grade=grade_10)
+        # class_11B = Lop(name="11B", siso=35, grade=grade_11)
+        # class_12C = Lop(name="12C", siso=36, grade=grade_12)
+        #
+        # # Associate students with classes
+        # class_10A.students.append(student_1)
+        # class_11B.students.append(student_2)
+        #
+        # # Add Diem (Scores)
+        # score_1 = Diem(type="15p", value=8.5, monhoc=math_subject, hocky=semester_1, student=student_1)
+        # score_2 = Diem(type="45p", value=6.5, monhoc=math_subject, hocky=semester_1, student=student_1)
+        # score_3 = Diem(type="ck", value=9, monhoc=math_subject, hocky=semester_1, student=student_1)
+        # score_4 = Diem(type="15p", value=7.5, monhoc=literature_subject, hocky=semester_1, student=student_1)
+        # score_5 = Diem(type="45p", value=9, monhoc=literature_subject, hocky=semester_1, student=student_1)
+        # score_6 = Diem(type="ck", value=9, monhoc=literature_subject, hocky=semester_1, student=student_1)
+        # score_7 = Diem(type="15p", value=8.5, monhoc=math_subject, hocky=semester_1, student=student_2)
+        # score_8 = Diem(type="45p", value=6.5, monhoc=math_subject, hocky=semester_1, student=student_2)
+        # score_9 = Diem(type="ck", value=9, monhoc=math_subject, hocky=semester_1, student=student_2)
+        # score_10 = Diem(type="15p", value=7.5, monhoc=literature_subject, hocky=semester_1, student=student_2)
+        # score_11 = Diem(type="45p", value=9, monhoc=literature_subject, hocky=semester_1, student=student_2)
+        # score_12 = Diem(type="ck", value=9, monhoc=literature_subject, hocky=semester_1, student=student_2)
+        #
+        # # Commit all changes to the database
+        # db.session.add_all([admin_user, staff_user, teacher_user, teacher_user_2])
+        # db.session.add_all([math_subject, literature_subject])
+        # db.session.add_all([semester_1, semester_2])
+        # db.session.add_all([student_1, student_2])
+        # db.session.add_all([grade_10, grade_11, grade_12])
+        # db.session.add_all([class_10A, class_11B, class_12C])
+        # db.session.add_all([score_1, score_2, score_3, score_4, score_5, score_6, score_7, score_8, score_9, score_10,
+        #                     score_11, score_12])
+        # db.session.commit()
+
