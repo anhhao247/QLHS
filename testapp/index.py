@@ -37,9 +37,13 @@ def view_student():
 
 @app.route("/diem")
 def view_diem():
-
-
     return render_template('diem.html')
+
+@app.route("/monhoc")
+def view_monhoc():
+    monhocs = dao.load_monhoc()
+    return render_template('monhoc.html',monhocs=monhocs)
+
 
 
 @app.route("/login", methods=['GET', 'POST'])

@@ -11,7 +11,8 @@ def load_class(grade_id=None):
     else:
         classes = Lop.query.all()
     return classes
-
+def load_monhoc(grade_id=None):
+    return  MonHoc.query.all()
 def load_student():
     return Student.query.all()
 

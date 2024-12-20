@@ -1,0 +1,97 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Môn học{% endblock %}
+
+{% block header %}Danh sách môn học{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+<div class="search-container">
+    <button onclick="addSubject()" class="action-button">Thêm môn học</button>
+    <input type="text" id="search-input" placeholder="Tìm kiếm môn học...">
+    <button onclick="searchTable()" class="action-button">Tìm kiếm</button>
+    <button onclick="deleteSubject()" class="action-button">Xóa môn học</button>
+</div>
+<div class="table-wrapper">
+    <table class="fl-table" id="subject-table">
+    <thead>
+      <tr>
+        <th>Mã môn học</th>
+        <th>Tên môn học</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for s in monhocs %}
+      <tr>
+          <td>{{ s.id }}</td>
+        <td>{{ s.name }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div id="no-results" style="display:none; text-align:center; color:red;">
+    Không tìm thấy kết quả phù hợp.
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    function removeAccents(str) {
+        return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D');
+    }
+
+    function searchTable() {
+        var input, filter, table, tr, td, i, txtValue, hasResult;
+        input = document.getElementById("search-input");
+        filter = removeAccents(input.value.toUpperCase());
+        table = document.getElementById("subject-table");
+        tr = table.getElementsByTagName("tr");
+
+        hasResult = false; // Biến để theo dõi nếu có kết quả phù hợp
+
+        // Loop qua tất cả các hàng trong bảng (trừ hàng đầu tiên là tiêu đề)
+        for (i = 1; i < tr.length; i++) { // Bắt đầu từ 1 để bỏ qua hàng tiêu đề
+            td = tr[i].getElementsByTagName("td");
+            tr[i].style.display = "none"; // Ẩn hàng ban đầu
+
+            // Loop qua tất cả các ô trong hàng
+            for (var j = 0; j < td.length; j++) {
+                if (td[j]) {
+                    txtValue = removeAccents(td[j].textContent || td[j].innerText);
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = ""; // Hiển thị hàng
+                        hasResult = true; // Đã tìm thấy kết quả phù hợp
+                        break; // Dừng vòng lặp khi tìm thấy từ khóa
+                    }
+                }
+            }
+        }
+
+        // Kiểm tra nếu không có kết quả tìm thấy, hiển thị thông báo
+        var noResultsDiv = document.getElementById("no-results");
+        if (filter !== "" && !hasResult) {
+            noResultsDiv.style.display = "block";
+        } else {
+            noResultsDiv.style.display = "none";
+        }
+
+        // Nếu không có từ khóa tìm kiếm, hiển thị tất cả các hàng
+        if (filter === "") {
+            for (i = 1; i < tr.length; i++) {
+                tr[i].style.display = "";
+            }
+        }
+    }
+
+    function addSubject() {
+        // Hàm xử lý thêm môn học
+        alert("Chức năng Thêm môn học chưa được triển khai.");
+    }
+
+    function deleteSubject() {
+        // Hàm xử lý xóa môn học
+        alert("Chức năng Xóa môn học chưa được triển khai.");
+    }
+</script>
+{% endblock %}
