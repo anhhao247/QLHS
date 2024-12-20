@@ -8,23 +8,27 @@
     <thead>
       <tr>
         <th>Họ tên</th>
-
+          <th>Điểm 15'</th>
+          <th>Điểm 15'</th>
+          <th>Điểm 15'</th>
+          <th>Điểm 15'</th>
+          <th>Điểm 15'</th>
+          <th>Điểm 1 tiết</th>
+          <th>Điểm 1 tiết</th>
+          <th>Điểm 1 tiết</th>
+          <th>Điểm cuối kỳ</th>
       </tr>
     </thead>
     <tbody>
-    {% for s in students %}
-      <tr>
-        <td>{{ s.ho }} {{ s.ten }}</td>
-        {% for d in diems %}
-          {% if s.id == d.student_id and d.type  == '15p'%}
-          <td>{{ d.value }}</td>
-          {% else %}
-          <td></td>
-          {% endif %}
+<!--    {% for s in students %}-->
+<!--      <tr>-->
+<!--        <td>{{ s.ho }} {{ s.ten }}</td>-->
+<!--        {% for d in diems %}-->
 
-        {% endfor %}
-      </tr>
-    {% endfor %}
+
+<!--        {% endfor %}-->
+<!--      </tr>-->
+<!--    {% endfor %}-->
 
     </tbody>
   </table>

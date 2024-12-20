@@ -15,8 +15,12 @@ def load_class(grade_id=None):
 def load_student():
     return Student.query.all()
 
-def load_diem():
-    return Diem.query.all()
+def load_diem_theo_mon_hoc(monhoc_id=None):
+    if monhoc_id:
+        diems = Diem.query.filter_by(monhoc_id=monhoc_id).all()
+    else:
+        pass
+    return diems
 
 def load_user():
     return User.query.all()
