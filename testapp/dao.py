@@ -25,5 +25,8 @@ def load_diem_theo_mon_hoc(monhoc_id=None):
 def load_user():
     return User.query.all()
 
+def load_teacher():
+    return Teacher.query.all()
+
 def get_student_by_id(student_id):
     return Student.query.get(student_id)

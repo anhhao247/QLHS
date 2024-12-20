@@ -25,6 +25,11 @@ def view_class():
 
     return render_template('class.html', classes=classes)
 
+@app.route("/teacher")
+def view_teacher():
+    teachers = dao.load_teacher()
+    return render_template('teacher.html', teachers=teachers)
+
 @app.route("/student")
 def view_student():
     students = dao.load_student()

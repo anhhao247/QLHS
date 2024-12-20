@@ -18,12 +18,120 @@
     {% block js %} {% endblock %}
 </head>
 <body>
-    {% block header %}
-      {% include 'layout/header.html' %}
-    {% endblock %}
-    <div class="container">
-    {% block content %} {% endblock %}
+<!--    {% block header %}-->
+<!--      {% include 'layout/header.html' %}-->
+<!--    {% endblock %}-->
+    <div class="sidebar">
+    <div class="logo-details">
+        <i class='bx bxl-c-plus-plus icon'></i>
+        <div class="logo_name">Student Management</div>
+        <i class='bx bx-menu' id="btn"></i>
     </div>
+    <ul class="nav-list">
+        <li>
+            <a href="#">
+                <i class='bx bx-user'></i>
+                <span class="links_name">User</span>
+            </a>
+<!--            Hiện ra khi hover-->
+            <span class="tooltip">User</span>
+        </li>
+        <li>
+            <a href="{{ url_for('view_grade') }}">
+                <i class='bx bx-grid-alt'></i>
+                <span class="links_name">Grade</span>
+            </a>
+            <span class="tooltip">Grade</span>
+        </li>
+        <li>
+            <a href="{{ url_for('view_class') }}">
+                <i class='bx bx-chat'></i>
+                <span class="links_name">Class</span>
+            </a>
+            <span class="tooltip">Class</span>
+        </li>
+        <li>
+            <a href="{{ url_for('view_teacher') }}">
+                <i class='bx bx-pie-chart-alt-2'></i>
+                <span class="links_name">Teacher</span>
+            </a>
+            <span class="tooltip">Teacher</span>
+        </li>
+        <li>
+            <a href="{{ url_for('view_student') }}">
+                <i class='bx bx-pie-chart-alt-2'></i>
+                <span class="links_name">Học sinh</span>
+            </a>
+            <span class="tooltip">Học sinh</span>
+        </li>
+        <li>
+            <a href="#">
+                <i class='bx bx-folder'></i>
+                <span class="links_name">Môn học</span>
+            </a>
+            <span class="tooltip">Môn học</span>
+        </li>
+        <li>
+            <a href="#">
+                <i class='bx bx-cart-alt'></i>
+                <span class="links_name">Điểm</span>
+            </a>
+            <span class="tooltip">Điểm</span>
+        </li>
+        <li>
+            <a href="#">
+                <i class='bx bx-heart'></i>
+                <span class="links_name">Thống kê</span>
+            </a>
+            <span class="tooltip">Thống kê</span>
+        </li>
+        <li>
+            <a href="#">
+                <i class='bx bx-cog'></i>
+                <span class="links_name">Tài khoản</span>
+            </a>
+            <span class="tooltip">Tài khoản</span>
+        </li>
+        <li class="profile">
+            <div class="profile-details">
+                <img src="profile.jpg" alt="profileImg">
+                <div class="name_job">
+                    <div class="name">Admin</div>
+                    <div class="job">Lê Anh Hào</div>
+                </div>
+            </div>
+            <i class='bx bx-log-out' id="log_out"></i>
+        </li>
+    </ul>
+</div>
+
+<!--Nội dung chính-->
+<section class="home-section">
+    {% block content %} {% endblock %}
+</section>
+
+
+<script>
+    let sidebar = document.querySelector(".sidebar");
+    let closeBtn = document.querySelector("#btn");
+    let searchBtn = document.querySelector(".bx-search");
+    closeBtn.addEventListener("click", ()=>{
+      sidebar.classList.toggle("open");
+      menuBtnChange();//calling the function(optional)
+    });
+    searchBtn.addEventListener("click", ()=>{ // Sidebar open when you click on the search iocn
+      sidebar.classList.toggle("open");
+      menuBtnChange(); //calling the function(optional)
+    });
+    // following are the code to change sidebar button(optional)
+    function menuBtnChange() {
+     if(sidebar.classList.contains("open")){
+       closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
+     }else {
+       closeBtn.classList.replace("bx-menu-alt-right","bx-menu");//replacing the iocns class
+     }
+    }
+</script>
 
 
     {% block footer %}
