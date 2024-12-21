@@ -1,7 +1,8 @@
 from click import style
+from pandas.core import methods
 
 from testapp import app, dao
-from flask import request, render_template, session, redirect, url_for, flash
+from flask import request, render_template, session, redirect, url_for, flash, jsonify
 from testapp.admin import *
 from testapp.models import Diem, MonHoc
 import pandas as pd
@@ -39,13 +40,50 @@ def view_student():
 def view_diem():
     return render_template('diem.html')
 
+# monhoc
 @app.route("/monhoc")
 def view_monhoc():
     monhocs = dao.load_monhoc()
     return render_template('monhoc.html',monhocs=monhocs)
 
 
+@app.route("/them_monhoc", methods=['POST'])
+def them_monhoc():
+    data = request.get_json()
+    name = data.get("name")
 
+    try:
+        if name:
+            dao.them_monhoc(name)  # Gọi hàm thêm môn học
+            return jsonify({"success": True}), 200
+        else:
+            return jsonify({"error": "Invalid input"}), 400
+    except ValueError as e:  # Bắt lỗi nếu môn học đã tồn tại
+        return jsonify({"error": str(e)}), 400
+
+
+@app.route("/sua_monhoc/<int:id>", methods=['PUT'])
+def sua_monhoc(id):
+    data = request.get_json()
+    name = data.get("name")
+
+    try:
+        if dao.sua_monhoc(id, name):
+            return jsonify({"success": True}), 200
+        else:
+            return jsonify({"error": "Not found"}), 404
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400  # Trả về lỗi nếu môn học đã tồn tại
+
+
+@app.route("/xoa_monhoc/<int:id>", methods=['DELETE'])
+def xoa_monhoc(id):
+    if dao.xoa_monhoc(id):
+        return jsonify({"success": True}), 200
+    else:
+        return jsonify({"error": "Not found"}), 404
+
+# monhoc
 @app.route("/login", methods=['GET', 'POST'])
 def view_login():
     if request.method == 'POST':
