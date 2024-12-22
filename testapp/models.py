@@ -17,34 +17,24 @@ class UserRole(enum.Enum):
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(50), nullable=False)
+    ho = Column(String(50), nullable=False)
+    ten = Column(String(50), nullable=False)
     username = Column(String(50), nullable=False)
     password = Column(String(50), nullable=False)
     active = Column(Boolean, default=True)
     user_role = Column(Enum(UserRole, nullable=False))
 
     def __str__(self):
-        return self.name
+        return f'{self.ho} {self.ten}'
 
-class Admin(User):
-    __tablename__ = 'admin'
-    id = Column(Integer, ForeignKey(User.id), primary_key=True)
-    ho = Column(String(50))
-    ten = Column(String(50))
-    permissions = Column(String(255))
-
-class Staff(User):
-    __tablename__ = 'staff'
-    id = Column(Integer, ForeignKey(User.id), primary_key=True)
-    ho = Column(String(50))
-    ten = Column(String(50))
 
 class Teacher(User):
     __tablename__ = 'teacher'
     id = Column(Integer, ForeignKey(User.id), primary_key=True)
-    ho = Column(String(50))
-    ten = Column(String(50))
     monhoc_id = Column(Integer, ForeignKey('monhoc.id'), nullable=False)
+
+    def __str__(self):
+        return f'{self.ho} {self.ten}'
 
 class MonHoc(db.Model):
     __tablename__ = 'monhoc'
@@ -86,7 +76,7 @@ class Grade(db.Model):
     __tablename__ = 'grade'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50), nullable=False)
-    lops = relationship('Lop', backref='grade', lazy=True)
+    lops = relationship('Lop', backref='grade', lazy=False)
 
     def __str__(self):
         return self.name
@@ -96,7 +86,7 @@ class Lop(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50), nullable=False)
     siso = Column(Integer, nullable=True)
-    grade_id = Column(Integer, ForeignKey('grade.id'), nullable=False)
+    grade_id = Column(Integer, ForeignKey(Grade.id), nullable=False)
 
     def __str__(self):
         return self.name
@@ -114,14 +104,14 @@ if __name__ == '__main__':
 
 
         # Add User Roles and Users
-        admin_user = Admin(name="Admin User", username="admin", password="admin123", user_role=UserRole.ADMIN,
-                           ho="Nguyen Van", ten="A", permissions="Full Access")
-        staff_user = Staff(name="Staff User", username="staff", password="staff123", user_role=UserRole.STAFF,
-                           ho="Tran Van", ten="B")
-        teacher_user = Teacher(name="Ngo Bao Chau", username="ngobaochau", password="teacher123",
-                               user_role=UserRole.TEACHER, ho="Ngo Bao", ten="Chau", monhoc_id=1)
-        teacher_user_2 = Teacher(name="Nguyen Nhat Anh", username="nguyennhatanh", password="teacher123",
-                               user_role=UserRole.TEACHER, ho="Nguyen Nhat", ten="Anh", monhoc_id=2)
+        admin_user = User(username="admin", password="admin123", user_role=UserRole.ADMIN,
+                           ho="Nguyễn Văn", ten="Admin")
+        staff_user = User(username="staff", password="staff123", user_role=UserRole.STAFF,
+                           ho="Trần Thị Thu", ten="Hoài")
+        teacher_user = Teacher(username="ngobaochau", password="teacher123",
+                               user_role=UserRole.TEACHER, ho="Ngô Bảo", ten="Châu", monhoc_id=1)
+        teacher_user_2 = Teacher(username="nguyennhatanh", password="teacher123",
+                               user_role=UserRole.TEACHER, ho="Phạm Minh", ten="Nhật", monhoc_id=2)
 
         # Add MonHoc (Subjects)
         math_subject = MonHoc(name="Toán")
@@ -132,9 +122,9 @@ if __name__ == '__main__':
         semester_2 = HocKy(name="HK2 2024-2025")
 
         # Add Students
-        student_1 = Student(ho="Pham", ten="Minh", sex="Nam", DoB=datetime(2010, 5, 15), address="123 Street A",
+        student_1 = Student(ho="Pham Thu", ten="Minh", sex="Nam", DoB=datetime(2010, 5, 15), address="123 Street A",
                             sdt="0123456789", email="minh.pham@example.com")
-        student_2 = Student(ho="Nguyen", ten="An", sex="Nữ", DoB=datetime(2011, 3, 22), address="456 Street B",
+        student_2 = Student(ho="Nguyen Van", ten="An", sex="Nữ", DoB=datetime(2011, 3, 22), address="456 Street B",
                             sdt="0987654321", email="an.nguyen@example.com")
 
         # Add Grades and Classes

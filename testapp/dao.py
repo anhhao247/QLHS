@@ -84,3 +84,6 @@ def auth_user(username, password, role=None):
         u = u.filter(User.user_role.__eq__(role))
 
     return u.first()
+
+def get_user_by_id(user_id):
+   return User.query.get(user_id)
