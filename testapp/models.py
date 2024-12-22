@@ -1,15 +1,15 @@
 from xmlrpc.client import DateTime
 
-from sqlalchemy import Column, Integer, Float, String, Boolean, Text, ForeignKey, Enum, DateTime
+from sqlalchemy import Column, Integer, Float, String, Boolean, Text, ForeignKey, DateTime, Enum
 from sqlalchemy.orm import relationship, backref
 from testapp import app, db
 from datetime import datetime
 from flask_login import UserMixin
 import hashlib
-import enum
+from enum import Enum as MyEnum
 
 # DemoUser --------------------------------------------------------------------------------------------------------------------------------------
-class UserRole(enum.Enum):
+class UserRole(MyEnum):
     ADMIN = 1
     STAFF = 2
     TEACHER = 3
@@ -43,6 +43,10 @@ class MonHoc(db.Model):
     teachers = relationship('Teacher', backref='monhoc', lazy=True)
     diems = relationship('Diem', backref='monhoc', lazy=True)
 
+    def __str__(self):
+        return self.name
+
+
 class Diem(db.Model):
     __tablename__ = 'diem'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -52,11 +56,14 @@ class Diem(db.Model):
     hocky_id = Column(Integer, ForeignKey('hocky.id'), nullable=False)
     student_id = Column(Integer, ForeignKey('student.id'), nullable=False)
 
+
 class HocKy(db.Model):
     __tablename__ = 'hocky'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50), nullable=False)
     diems = relationship('Diem', backref='hocky', lazy=True)
+    def __str__(self):
+        return self.name
 
 class Student(db.Model):
     __tablename__ = 'student'
@@ -71,6 +78,8 @@ class Student(db.Model):
     diems = relationship('Diem', backref='student', lazy=True)
     students = relationship('Lop', secondary='lop_student', lazy='subquery',
                             backref=backref('students', lazy=True))
+    def __str__(self):
+        return self.name
 
 class Grade(db.Model):
     __tablename__ = 'grade'
