@@ -19,7 +19,7 @@
     {% block js %} {% endblock %}
 </head>
 <body>
-    <div class="sidebar">
+    <div class="sidebar open">
     <div class="logo-details">
         <i class='bx bxl-c-plus-plus icon'></i>
         <div class="logo_name">Student Management</div>
@@ -104,7 +104,6 @@
 
 <!--Nội dung chính-->
 <section class="home-section">
-    <h1>{% block header %}{% endblock %}</h1> <!-- Thêm khối header -->
     {% block content %} {% endblock %}
 </section>
 
