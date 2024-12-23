@@ -1,88 +1,20 @@
 from xmlrpc.client import DateTime
 
+
 import bcrypt
 from sqlalchemy import Column, Integer, Float, String, Boolean, Text, ForeignKey, Enum, DateTime
+
+# from sqlalchemy import Column, Integer, Float, String, Boolean, Text, ForeignKey, DateTime, Enum
+
 from sqlalchemy.orm import relationship, backref
 from testapp import app, db
 from datetime import datetime
 from flask_login import UserMixin
 import hashlib
-import enum
-
-# class Category(db.Model):
-#     __tablename__ = 'category'
-#     id = Column(Integer, primary_key=True, autoincrement=True)
-#     name = Column(String(50), nullable=False)
-#     products = relationship('Product', backref='category', lazy=True)
-#
-# class Product(db.Model):
-#     __tablename__ = 'product'
-#     id = Column(Integer, primary_key=True, autoincrement=True)
-#     name = Column(String(50), nullable=False)
-#     price = Column(Float, default=0)
-#     # created_date = Column(DateTime, default=datetime.now())
-#     category_id = Column(Integer, ForeignKey(Category.id), nullable=False)
-#     tags = relationship('Tag', secondary='product_tag', lazy='subquery',
-#                         backref=backref('products', lazy=True))
-#
-#
-# class Tag(db.Model):
-#     __tablename__ = 'tag'
-#     id = Column(Integer, primary_key=True, autoincrement=True)
-#     name = Column(String(50), nullable=False)
-#
-# product_tag = db.Table('product_tag',
-#                        Column('product_id', Integer, ForeignKey(Product.id), primary_key=True),
-#                        Column('tag_id', Integer, ForeignKey(Tag.id), primary_key=True))
-
-# demo3----------------------------------------------------------------------------------------------------------------------------
-
-
-# class Grade(db.Model):
-#     id = Column(Integer, primary_key=True, autoincrement=True)
-#     name = Column(String(50), nullable=False)
-#     classes = relationship('Class', backref='grade', lazy=True)
-#
-# class Class(db.Model):
-#     id = Column(Integer, primary_key=True, autoincrement=True)
-#     name = Column(String(50), nullable=False)
-#     si_so = Column(Integer, nullable=False)
-#     grade_id = Column(Integer, ForeignKey(Grade.id), nullable=False)
-#     students = relationship('Student', secondary='student_class', lazy='subquery',
-#                             backref=backref('classes', lazy=True))
-#
-# class Student(db.Model):
-#     id = Column(Integer, primary_key=True, autoincrement=True)
-#     first_name = Column(String(50), nullable=False)
-#     last_name = Column(String(50), nullable=False)
-#
-#
-# student_class = db.Table('student_class',
-#                          Column('student_id', Integer, ForeignKey(Student.id), primary_key=True),
-#                          Column('class_id', Integer, ForeignKey(Class.id), primary_key=True))
-
-
-# demo4-----------------------------------------------------------------------------------------------------------------------------
-# class student_class(db.Model):
-#     student_id = Column(ForeignKey('student.id'), primary_key=True)
-#     class_id = Column(ForeignKey('class.id'), primary_key=True)
-#     mark = Column(Float, default=0)
-#
-#
-# class Class(db.Model):
-#     id = Column(Integer, primary_key=True, autoincrement=True)
-#     name = Column(String(50), nullable=False)
-#     si_so = Column(Integer, nullable=False)
-#     students = relationship('student_class', backref='class')
-#
-# class Student(db.Model):
-#     id = Column(Integer, primary_key=True, autoincrement=True)
-#     first_name = Column(String(50), nullable=False)
-#     last_name = Column(String(50), nullable=False)
-#     classes = relationship('student_class', backref='student')
+from enum import Enum as MyEnum
 
 # DemoUser --------------------------------------------------------------------------------------------------------------------------------------
-class UserRole(enum.Enum):
+class UserRole(MyEnum):
     ADMIN = 1
     STAFF = 2
     TEACHER = 3
@@ -90,7 +22,8 @@ class UserRole(enum.Enum):
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(50), nullable=False)
+    ho = Column(String(50), nullable=False)
+    ten = Column(String(50), nullable=False)
     username = Column(String(50), nullable=False)
     password = Column(String(500), nullable=False)
     active = Column(Boolean, default=True)
@@ -110,27 +43,16 @@ class User(db.Model, UserMixin):
         return bcrypt.checkpw(input_password.encode('utf-8'), stored_password.encode('utf-8'))
 
     def __str__(self):
-        return self.name
+        return f'{self.ho} {self.ten}'
 
-class Admin(User):
-    __tablename__ = 'admin'
-    id = Column(Integer, ForeignKey(User.id), primary_key=True)
-    ho = Column(String(50))
-    ten = Column(String(50))
-    permissions = Column(String(255))
-
-class Staff(User):
-    __tablename__ = 'staff'
-    id = Column(Integer, ForeignKey(User.id), primary_key=True)
-    ho = Column(String(50))
-    ten = Column(String(50))
 
 class Teacher(User):
     __tablename__ = 'teacher'
     id = Column(Integer, ForeignKey(User.id), primary_key=True)
-    ho = Column(String(50))
-    ten = Column(String(50))
     monhoc_id = Column(Integer, ForeignKey('monhoc.id'), nullable=False)
+
+    def __str__(self):
+        return f'{self.ho} {self.ten}'
 
 class MonHoc(db.Model):
     __tablename__ = 'monhoc'
@@ -138,6 +60,10 @@ class MonHoc(db.Model):
     name = Column(String(50), nullable=False)
     teachers = relationship('Teacher', backref='monhoc', lazy=True)
     diems = relationship('Diem', backref='monhoc', lazy=True)
+
+    def __str__(self):
+        return self.name
+
 
 class Diem(db.Model):
     __tablename__ = 'diem'
@@ -148,11 +74,14 @@ class Diem(db.Model):
     hocky_id = Column(Integer, ForeignKey('hocky.id'), nullable=False)
     student_id = Column(Integer, ForeignKey('student.id'), nullable=False)
 
+
 class HocKy(db.Model):
     __tablename__ = 'hocky'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50), nullable=False)
     diems = relationship('Diem', backref='hocky', lazy=True)
+    def __str__(self):
+        return self.name
 
 class Student(db.Model):
     __tablename__ = 'student'
@@ -167,12 +96,14 @@ class Student(db.Model):
     diems = relationship('Diem', backref='student', lazy=True)
     students = relationship('Lop', secondary='lop_student', lazy='subquery',
                             backref=backref('students', lazy=True))
+    def __str__(self):
+        return self.name
 
 class Grade(db.Model):
     __tablename__ = 'grade'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50), nullable=False)
-    lops = relationship('Lop', backref='grade', lazy=True)
+    lops = relationship('Lop', backref='grade', lazy=False)
 
     def __str__(self):
         return self.name
@@ -182,7 +113,7 @@ class Lop(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50), nullable=False)
     siso = Column(Integer, nullable=True)
-    grade_id = Column(Integer, ForeignKey('grade.id'), nullable=False)
+    grade_id = Column(Integer, ForeignKey(Grade.id), nullable=False)
 
     def __str__(self):
         return self.name
@@ -195,7 +126,8 @@ lop_student = db.Table('lop_student',
 
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()
+#         db.create_all()
+        << DinhLuan
 
         # Add User Roles and Users
         admin_user = Admin(name="Admin User", username="admin", password=User.hash_password("admin123"),
@@ -208,6 +140,20 @@ if __name__ == '__main__':
                                  password=User.hash_password("teacher123"),
                                  user_role=UserRole.TEACHER, ho="Nguyen Nhat", ten="Anh", monhoc_id=2)
 
+
+
+
+        # Add User Roles and Users
+#         admin_user = User(username="admin", password="admin123", user_role=UserRole.ADMIN,
+#                            ho="Nguyễn Văn", ten="Admin")
+#         staff_user = User(username="staff", password="staff123", user_role=UserRole.STAFF,
+#                            ho="Trần Thị Thu", ten="Hoài")
+#         teacher_user = Teacher(username="ngobaochau", password="teacher123",
+#                                user_role=UserRole.TEACHER, ho="Ngô Bảo", ten="Châu", monhoc_id=1)
+#         teacher_user_2 = Teacher(username="nguyennhatanh", password="teacher123",
+#                                user_role=UserRole.TEACHER, ho="Phạm Minh", ten="Nhật", monhoc_id=2)
+
+
         # Add MonHoc (Subjects)
         math_subject = MonHoc(name="Toán")
         literature_subject = MonHoc(name="Ngữ Văn")
@@ -217,9 +163,9 @@ if __name__ == '__main__':
         semester_2 = HocKy(name="HK2 2024-2025")
 
         # Add Students
-        student_1 = Student(ho="Pham", ten="Minh", sex="Nam", DoB=datetime(2010, 5, 15), address="123 Street A",
+        student_1 = Student(ho="Pham Thu", ten="Minh", sex="Nam", DoB=datetime(2010, 5, 15), address="123 Street A",
                             sdt="0123456789", email="minh.pham@example.com")
-        student_2 = Student(ho="Nguyen", ten="An", sex="Nữ", DoB=datetime(2011, 3, 22), address="456 Street B",
+        student_2 = Student(ho="Nguyen Van", ten="An", sex="Nữ", DoB=datetime(2011, 3, 22), address="456 Street B",
                             sdt="0987654321", email="an.nguyen@example.com")
 
         # Add Grades and Classes

@@ -76,29 +76,45 @@ def load_teacher():
 def get_student_by_id(student_id):
     return Student.query.get(student_id)
 
+# DinhLuan
 # Load học kỳ
-def load_hoc_ky():
-    return HocKy.query.all()
+# def load_hoc_ky():
+#     return HocKy.query.all()
 
-def check_password(Stored_password, entered_password):
-    return check_password_hash(Stored_password, entered_password)
+# def check_password(Stored_password, entered_password):
+#     return check_password_hash(Stored_password, entered_password)
 
 
-def get_user_by_username(username):
-    # Truy vấn cơ sở dữ liệu để lấy thông tin người dùng
-    # Ví dụ, trả về một đối tượng người dùng có chứa mật khẩu đã băm
-    user = db.session.query(User).filter_by(username=username).first()
-    if user:
-        return {"id": user.id, "username": user.username, "password": user.password}
-    return None
+# def get_user_by_username(username):
+#     # Truy vấn cơ sở dữ liệu để lấy thông tin người dùng
+#     # Ví dụ, trả về một đối tượng người dùng có chứa mật khẩu đã băm
+#     user = db.session.query(User).filter_by(username=username).first()
+#     if user:
+#         return {"id": user.id, "username": user.username, "password": user.password}
+#     return None
+
+# def get_user_by_id(user_id):
+#     # Lấy thông tin người dùng từ cơ sở dữ liệu dựa trên user_id
+#     user = User.query.get(user_id)  # Truy vấn cơ sở dữ liệu với user_id
+#     if user:
+#         return {
+#             "id": user.id,
+#             "name": user.name,
+#             "job": user.user_role
+#         }
+#     return None  # Nếu không tìm thấy người dùng, trả về None
+
+def auth_user(username, password, role=None):
+    password = str(hashlib.md5(password.encode('utf-8')).hexdigest())
+
+    u = User.query.filter(User.username.__eq__(username),
+                          User.password.__eq__(password))
+
+    if role:
+        u = u.filter(User.user_role.__eq__(role))
+
+    return u.first()
 
 def get_user_by_id(user_id):
-    # Lấy thông tin người dùng từ cơ sở dữ liệu dựa trên user_id
-    user = User.query.get(user_id)  # Truy vấn cơ sở dữ liệu với user_id
-    if user:
-        return {
-            "id": user.id,
-            "name": user.name,
-            "job": user.user_role
-        }
-    return None  # Nếu không tìm thấy người dùng, trả về None
+   return User.query.get(user_id)
+
