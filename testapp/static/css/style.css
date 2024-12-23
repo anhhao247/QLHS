@@ -365,3 +365,54 @@ button {
   cursor: pointer;
   margin: 0 5px;
 }
+
+/* Tạo hiệu ứng mượt mà khi chọn option */
+.select2-container {
+    width: 100% !important;
+    height: 30px;
+}
+/* Giảm kích thước của select */
+.form-select {
+    width: 150px;  /* Bạn có thể điều chỉnh chiều rộng nhỏ lại */
+    padding: 8px 15px;  /* Giảm padding một chút */
+    font-size: 0.875rem;  /* Giảm kích thước chữ */
+    border-radius: 0.375rem;  /* Giảm bo góc */
+    transition: all 0.3s ease-in-out;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+}
+/* Cải thiện giao diện select */
+.form-select {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease-in-out;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+}
+
+/* Thêm hiệu ứng khi hover và focus */
+.form-select:hover, .form-select:focus {
+    border-color: #007bff;
+    background-color: #e9f7fd;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Tạo bóng đổ cho select */
+.form-select.shadow-sm {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Tùy chỉnh option khi chọn */
+.form-select option {
+    padding: 10px;
+    font-size: 1rem;
+    color: #495057;
+}
+
+/* Thêm hiệu ứng khi hover vào option */
+.form-select option:hover {
+    background-color: #007bff;
+    color: white;
+}
+
