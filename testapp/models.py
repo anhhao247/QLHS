@@ -1,6 +1,11 @@
 from xmlrpc.client import DateTime
 
-from sqlalchemy import Column, Integer, Float, String, Boolean, Text, ForeignKey, DateTime, Enum
+
+import bcrypt
+from sqlalchemy import Column, Integer, Float, String, Boolean, Text, ForeignKey, Enum, DateTime
+
+# from sqlalchemy import Column, Integer, Float, String, Boolean, Text, ForeignKey, DateTime, Enum
+
 from sqlalchemy.orm import relationship, backref
 from testapp import app, db
 from datetime import datetime
@@ -20,9 +25,22 @@ class User(db.Model, UserMixin):
     ho = Column(String(50), nullable=False)
     ten = Column(String(50), nullable=False)
     username = Column(String(50), nullable=False)
-    password = Column(String(50), nullable=False)
+    password = Column(String(500), nullable=False)
     active = Column(Boolean, default=True)
     user_role = Column(Enum(UserRole, nullable=False))
+
+    @staticmethod
+    def hash_password(password):
+        """Hàm băm mật khẩu sử dụng bcrypt"""
+        # Băm mật khẩu với bcrypt
+        salt = bcrypt.gensalt()  # Tạo salt
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+        return hashed_password.decode('utf-8')  # Trả về mật khẩu băm dưới dạng string
+
+    @staticmethod
+    def check_password(stored_password, input_password):
+        """Kiểm tra mật khẩu nhập vào với mật khẩu đã băm"""
+        return bcrypt.checkpw(input_password.encode('utf-8'), stored_password.encode('utf-8'))
 
     def __str__(self):
         return f'{self.ho} {self.ten}'
@@ -108,19 +126,33 @@ lop_student = db.Table('lop_student',
 
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()
+#         db.create_all()
+        << DinhLuan
+
+        # Add User Roles and Users
+        admin_user = Admin(name="Admin User", username="admin", password=User.hash_password("admin123"),
+                           user_role=UserRole.ADMIN, ho="Nguyen Van", ten="A", permissions="Full Access")
+        staff_user = Staff(name="Staff User", username="staff", password=User.hash_password("staff123"),
+                           user_role=UserRole.STAFF, ho="Tran Van", ten="B")
+        teacher_user = Teacher(name="Ngo Bao Chau", username="ngobaochau", password=User.hash_password("teacher123"),
+                               user_role=UserRole.TEACHER, ho="Ngo Bao", ten="Chau", monhoc_id=1)
+        teacher_user_2 = Teacher(name="Nguyen Nhat Anh", username="nguyennhatanh",
+                                 password=User.hash_password("teacher123"),
+                                 user_role=UserRole.TEACHER, ho="Nguyen Nhat", ten="Anh", monhoc_id=2)
+
 
 
 
         # Add User Roles and Users
-        admin_user = User(username="admin", password="admin123", user_role=UserRole.ADMIN,
-                           ho="Nguyễn Văn", ten="Admin")
-        staff_user = User(username="staff", password="staff123", user_role=UserRole.STAFF,
-                           ho="Trần Thị Thu", ten="Hoài")
-        teacher_user = Teacher(username="ngobaochau", password="teacher123",
-                               user_role=UserRole.TEACHER, ho="Ngô Bảo", ten="Châu", monhoc_id=1)
-        teacher_user_2 = Teacher(username="nguyennhatanh", password="teacher123",
-                               user_role=UserRole.TEACHER, ho="Phạm Minh", ten="Nhật", monhoc_id=2)
+#         admin_user = User(username="admin", password="admin123", user_role=UserRole.ADMIN,
+#                            ho="Nguyễn Văn", ten="Admin")
+#         staff_user = User(username="staff", password="staff123", user_role=UserRole.STAFF,
+#                            ho="Trần Thị Thu", ten="Hoài")
+#         teacher_user = Teacher(username="ngobaochau", password="teacher123",
+#                                user_role=UserRole.TEACHER, ho="Ngô Bảo", ten="Châu", monhoc_id=1)
+#         teacher_user_2 = Teacher(username="nguyennhatanh", password="teacher123",
+#                                user_role=UserRole.TEACHER, ho="Phạm Minh", ten="Nhật", monhoc_id=2)
+
 
         # Add MonHoc (Subjects)
         math_subject = MonHoc(name="Toán")

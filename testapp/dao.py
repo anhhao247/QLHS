@@ -1,5 +1,12 @@
+from functools import wraps
+
+from flask import session, redirect, url_for
+from sqlalchemy.exc import NoResultFound
+
 from testapp.models import *
 from testapp import app
+from werkzeug.security import check_password_hash
+
 
 # load khoi
 def load_grade():
@@ -57,12 +64,7 @@ def load_student():
 
 # load diem theo mon
 def load_diem_theo_mon_hoc(monhoc_id=None):
-    if monhoc_id:
-        diems = Diem.query.filter_by(monhoc_id=monhoc_id).all()
-    else:
-        pass
-    return diems
-
+  return Diem.query.all()
 # load user
 def load_user():
     return User.query.all()
@@ -73,6 +75,34 @@ def load_teacher():
 
 def get_student_by_id(student_id):
     return Student.query.get(student_id)
+
+# DinhLuan
+# Load học kỳ
+# def load_hoc_ky():
+#     return HocKy.query.all()
+
+# def check_password(Stored_password, entered_password):
+#     return check_password_hash(Stored_password, entered_password)
+
+
+# def get_user_by_username(username):
+#     # Truy vấn cơ sở dữ liệu để lấy thông tin người dùng
+#     # Ví dụ, trả về một đối tượng người dùng có chứa mật khẩu đã băm
+#     user = db.session.query(User).filter_by(username=username).first()
+#     if user:
+#         return {"id": user.id, "username": user.username, "password": user.password}
+#     return None
+
+# def get_user_by_id(user_id):
+#     # Lấy thông tin người dùng từ cơ sở dữ liệu dựa trên user_id
+#     user = User.query.get(user_id)  # Truy vấn cơ sở dữ liệu với user_id
+#     if user:
+#         return {
+#             "id": user.id,
+#             "name": user.name,
+#             "job": user.user_role
+#         }
+#     return None  # Nếu không tìm thấy người dùng, trả về None
 
 def auth_user(username, password, role=None):
     password = str(hashlib.md5(password.encode('utf-8')).hexdigest())
@@ -87,3 +117,4 @@ def auth_user(username, password, role=None):
 
 def get_user_by_id(user_id):
    return User.query.get(user_id)
+
