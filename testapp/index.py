@@ -1,11 +1,20 @@
 from functools import wraps
 
 
+# <<<<<<< Luan
 from testapp import app, dao
 from flask import request, render_template, session, redirect, url_for, flash, jsonify, logging
 from testapp.admin import *
 from testapp.dao import get_user_by_id, xoa_hocsinh
 from testapp.models import Diem, MonHoc, User, lop_student
+# =======
+# from testapp import app, dao, login
+# from flask import request, render_template, session, redirect, url_for, flash, jsonify
+# from testapp.admin import *
+# # DinhLuan
+# from testapp.dao import get_user_by_id
+# from testapp.models import Diem, MonHoc, User
+# >>>>>>> main
 import pandas as pd
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime, timedelta
@@ -27,6 +36,14 @@ def login_required(f):
             return redirect(url_for('view_login'))  # Nếu không đăng nhập, chuyển hướng đến trang login
         return f(*args, **kwargs)
     return decorated_function
+# =======
+# from testapp.models import UserRole
+# from testapp.models import Diem, MonHoc
+# import pandas as pd
+# from sqlalchemy.exc import IntegrityError
+# from datetime import datetime
+# from flask_login import login_user
+# >>>>>>> main
 
 @app.route("/")
 @login_required
@@ -529,6 +546,33 @@ def upload_students():
 
     return render_template('upload.html')
 
+@app.route("/login", methods=['get', 'post'])
+def login_view():
+    if request.method.__eq__('POST'):
+        username = request.form.get('username')
+        password = request.form.get('password')
+        user = dao.auth_user(username=username, password=password)
+        if user:
+            login_user(user=user)
+
+            next = request.args.get('next')
+            return redirect(next if next else '/')
+
+    return render_template('login.html')
+
+@app.route('/login-admin', methods=['post'])
+def login_admin_process():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    user = dao.auth_user(username=username, password=password, role=UserRole.ADMIN)
+    if user:
+        login_user(user=user)
+
+    return redirect('/admin')
+
+@login.user_loader
+def load_user(user_id):
+    return dao.get_user_by_id(user_id)
 
 if __name__ == '__main__':
     app.run(debug=True)
