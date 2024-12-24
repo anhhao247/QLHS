@@ -3,21 +3,29 @@
 {% block title %}Class{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-            {% for c in classes %}
-            <div class="col-md-3">
-                <div class="card">
-                  <img class="card-img-top" src="{{ url_for('static', filename='images/instagram.jpg') }}" alt="Card image">
-                  <div class="card-body">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+
+<div id="class-list-container" class="container">
+    <input type="hidden" id="current-class-id" value="">
+    <h1>Danh sách lớp</h1>
+    <div class="row">
+        {% for c in classes %}
+        <div class="col-md-3">
+            <div class="card">
+                <img class="card-img-top" src="{{ url_for('static', filename='images/instagram.jpg') }}"
+                     alt="Card image">
+                <div class="card-body">
                     <h4 class="card-title">{{ c.name }}</h4>
-                      <p>Sĩ số {{ c.siso }}</p>
-                    <a href="#" class="btn btn-primary">{{ c.grade.name }}</a>
-                  </div>
+                      <p class="siso">Sĩ số: <span>{{ c.siso }}</span></p> <!-- Hiển thị sĩ số -->
+                    <button onclick="showStudentList({{ c.id }}, '{{ c.name }}')" class="btn btn-primary">Hiển thị học
+                        sinh
+                    </button>
                 </div>
             </div>
-            {% endfor %}
         </div>
+        {% endfor %}
     </div>
+</div>
 
 {% endblock %}
+

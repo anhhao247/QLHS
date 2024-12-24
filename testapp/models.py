@@ -162,8 +162,8 @@ class Student(db.Model):
     sex = Column(Enum('Nam', 'Nữ'), nullable=False)
     DoB = Column(DateTime, nullable=False)
     address = Column(String(100), nullable=False)
-    sdt = Column(String(20), nullable=False)
-    email = Column(String(50), nullable=False)
+    sdt = Column(String(20), nullable=False, unique=True)
+    email = Column(String(50), nullable=False, unique=True)
     diems = relationship('Diem', backref='student', lazy=True)
     students = relationship('Lop', secondary='lop_student', lazy='subquery',
                             backref=backref('students', lazy=True))
@@ -195,7 +195,7 @@ lop_student = db.Table('lop_student',
 
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()
+        # db.create_all()
 
         # Add User Roles and Users
         admin_user = Admin(name="Admin User", username="admin", password=User.hash_password("admin123"),
