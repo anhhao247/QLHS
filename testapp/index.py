@@ -442,21 +442,30 @@ def xoa_monhoc(id):
 @app.route("/login", methods=['GET', 'POST'])
 def view_login():
     if request.method == 'POST':
-        data = request.get_json()  # Lấy dữ liệu JSON từ yêu cầu AJAX
-        username = data.get('username')
-        password = data.get('password')
+        try:
+            data = request.get_json()
+            print("Received data:", data)  # Log kiểm tra dữ liệu
 
-        # Lấy thông tin người dùng từ cơ sở dữ liệu
-        user = dao.get_user_by_username(username)
+            username = data.get('username')
+            password = data.get('password')
 
-        if user and User.check_password(user["password"], password):
-            # Đăng nhập thành công, lưu thông tin vào session
-            session.permanent = True  # Đảm bảo session có thời gian hết hạn
-            session['user_id'] = user['id']
-            return jsonify({"success": True}), 200  # Trả về thông báo thành công
-        else:
-            # Đăng nhập thất bại, trả về thông báo lỗi
-            return jsonify({"success": False, "error": "Tên đăng nhập hoặc mật khẩu không chính xác"}), 400
+            # Kiểm tra dữ liệu có đầy đủ không
+            if not username or not password:
+                return jsonify({"success": False, "error": "Tên đăng nhập và mật khẩu không được để trống"}), 400
+
+            # Lấy thông tin người dùng từ cơ sở dữ liệu
+            user = dao.get_user_by_username(username)
+            print("User from database:", user)  # Log kiểm tra dữ liệu người dùng
+
+            if user and User.check_password(user["password"], password):
+                session.permanent = True
+                session['user_id'] = user['id']
+                return jsonify({"success": True}), 200
+            else:
+                return jsonify({"success": False, "error": "Tên đăng nhập hoặc mật khẩu không chính xác"}), 400
+        except Exception as e:
+            print("Error during login:", str(e))  # Log lỗi server
+            return jsonify({"success": False, "error": "Lỗi hệ thống"}), 500
 
     return render_template('login.html')
 
